@@ -1,0 +1,79 @@
+@charset "utf-8";
+/* CSS Document */
+
+
+.row {
+	display: flex;
+}
+
+.column {
+	flex: 50%;
+	padding: 10px;
+}
+
+.mt-3 {
+	margin-top: 3em;
+}
+
+h1 {
+	padding: 20px 0 30px 0;
+}
+
+p {
+	margin: 0.5em 0!important;
+}
+
+.single-input {
+	margin: 20px 0 15px;
+}
+
+label {
+	font-size: 1.4em;
+	font-weight: bold;
+}
+
+input[type=text] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 3px 0;
+  box-sizing: border-box;
+}
+
+input[type=text]:focus {
+  border: 3px solid #555;
+}
+
+input[type=button] {
+  background-color: #737bd9;
+  border: none;
+  color: white;
+  padding: 7px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 5px;
+  margin: 10px 0;
+}
+
+.sendbtn {
+  background-color: #737bd9;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.right-side{
+	padding: 50px 40px;
+}
+
+.right-side img{
+	width: 200px;
+	margin: 0 auto;
+}
