@@ -34,7 +34,7 @@ function SLL_admin_styles(){
 function SLL_admin_scripts(){
 	if($_GET['page']=='sll') {
 		wp_enqueue_script( 'SLL_script', SLL_url.'/assets/js/script.js', array('jquery'), '1.0' );
-		wp_enqueue_script( 'github-btn-script', 'https://buttons.github.io/buttons.js' );
+		wp_enqueue_script( 'github-btn-script', SLL_url.'/assets/js/github-buttons.js' );
 	}
 }
 
