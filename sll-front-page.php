@@ -113,8 +113,11 @@ wp_enqueue_media();
 				<img src="<?php echo $twitter_image ?>" alt="" id="getTwImage" style="height: 200px;">
 				<input type="hidden" id="twimginput" name="twitter_image" value="<?php echo $twitter_image ?>">
 			</div>
+			
+			<?php wp_nonce_field( 'form', 'form_nounce' ); ?>
 
 			<button class="sendbtn" type="submit" name="save">Save</button>
+			
 			
 		</form>
 	</div>
@@ -156,282 +159,291 @@ wp_enqueue_media();
 	
 <?php
 function SLL_insert_data() {
-		
-		global $wpdb;
-		$table_name= $wpdb->prefix.'sll_options';
 	
-		if(isset($_POST['save'])) {
-			
-			
+		if ( ! isset( $_POST['form_nounce'] ) 
+			|| ! wp_verify_nonce( $_POST['form_nounce'], 'form' ) 
+		) {
+		   print 'Sorry, your nonce did not verify.';
+		   exit;
+		} else {
+		
+			global $wpdb;
+			$table_name= $wpdb->prefix.'sll_options';
 
-			$SLL_primary_title = sanitize_text_field($_POST['primary_title']);
-			$SLL_primary_meta_title = sanitize_text_field($_POST['primary_meta_title']);
-			$SLL_primary_description =sanitize_text_field($_POST['primary_description']);
-			$SLL_og_type = sanitize_text_field($_POST['og_type']);
-			$SLL_og_url = sanitize_text_field($_POST['og_url']);
-			$SLL_og_title = sanitize_text_field($_POST['og_title']);
-			$SLL_og_description = sanitize_text_field($_POST['og_description']);
-			$SLL_og_image = sanitize_text_field($_POST['og_image']);
-			$SLL_twitter_card = sanitize_text_field($_POST['twitter_card']);
-			$SLL_twitter_url = sanitize_text_field($_POST['twitter_url']);
-			$SLL_twitter_title = sanitize_text_field($_POST['twitter_title']);
-			$SLL_twitter_description = sanitize_text_field($_POST['twitter_description']);
-			$SLL_twitter_image = sanitize_text_field($_POST['twitter_image']);
-			
-			function check_primary_title($primary_title)
-			{
-				if (empty($primary_title)) {
-					return false;
+			if(isset($_POST['save'])) {
+
+
+
+				$SLL_primary_title = sanitize_text_field($_POST['primary_title']);
+				$SLL_primary_meta_title = sanitize_text_field($_POST['primary_meta_title']);
+				$SLL_primary_description =sanitize_text_field($_POST['primary_description']);
+				$SLL_og_type = sanitize_text_field($_POST['og_type']);
+				$SLL_og_url = sanitize_text_field($_POST['og_url']);
+				$SLL_og_title = sanitize_text_field($_POST['og_title']);
+				$SLL_og_description = sanitize_text_field($_POST['og_description']);
+				$SLL_og_image = sanitize_text_field($_POST['og_image']);
+				$SLL_twitter_card = sanitize_text_field($_POST['twitter_card']);
+				$SLL_twitter_url = sanitize_text_field($_POST['twitter_url']);
+				$SLL_twitter_title = sanitize_text_field($_POST['twitter_title']);
+				$SLL_twitter_description = sanitize_text_field($_POST['twitter_description']);
+				$SLL_twitter_image = sanitize_text_field($_POST['twitter_image']);
+
+				function check_primary_title($primary_title)
+				{
+					if (empty($primary_title)) {
+						return false;
+					}
+
+					if (strlen(trim($primary_title)) > 250) {
+						return false;
+					}
+
+					return true;
 				}
 
-				if (strlen(trim($primary_title)) > 250) {
-					return false;
+				function check_primary_meta_title($primary_meta_title)
+				{
+					if (empty($primary_meta_title)) {
+						return false;
+					}
+
+					if (strlen(trim($primary_meta_title)) > 250) {
+						return false;
+					}
+
+					return true;
 				}
 
-				return true;
-			}
-			
-			function check_primary_meta_title($primary_meta_title)
-			{
-				if (empty($primary_meta_title)) {
-					return false;
+				function check_primary_description($primary_description)
+				{
+					if (empty($primary_description)) {
+						return false;
+					}
+
+					if (strlen(trim($primary_description)) > 250) {
+						return false;
+					}
+
+					return true;
 				}
 
-				if (strlen(trim($primary_meta_title)) > 250) {
-					return false;
+				function check_og_type($og_type)
+				{
+					if (empty($og_type)) {
+						return false;
+					}
+
+					if (strlen(trim($og_type)) > 50) {
+						return false;
+					}
+
+					return true;
 				}
 
-				return true;
-			}
-			
-			function check_primary_description($primary_description)
-			{
-				if (empty($primary_description)) {
-					return false;
+				function check_og_url($og_url)
+				{
+					if (empty($og_url)) {
+						return false;
+					}
+
+					if (strlen(trim($og_url)) > 250) {
+						return false;
+					}
+
+					return true;
 				}
 
-				if (strlen(trim($primary_description)) > 250) {
-					return false;
+				function check_og_title($og_title)
+				{
+					if (empty($og_title)) {
+						return false;
+					}
+
+					if (strlen(trim($og_title)) > 250) {
+						return false;
+					}
+
+					return true;
 				}
 
-				return true;
-			}
-			
-			function check_og_type($og_type)
-			{
-				if (empty($og_type)) {
-					return false;
+				function check_og_description($og_description)
+				{
+					if (empty($og_description)) {
+						return false;
+					}
+
+					if (strlen(trim($og_description)) > 250) {
+						return false;
+					}
+
+					return true;
 				}
 
-				if (strlen(trim($og_type)) > 50) {
-					return false;
+				function check_og_image($og_image)
+				{
+					if (empty($og_image)) {
+						return false;
+					}
+
+					if (strlen(trim($og_image)) > 250) {
+						return false;
+					}
+
+					return true;
 				}
 
-				return true;
-			}
-			
-			function check_og_url($og_url)
-			{
-				if (empty($og_url)) {
-					return false;
+				function check_twitter_card($twitter_card)
+				{
+					if (empty($twitter_card)) {
+						return false;
+					}
+
+					if (strlen(trim($twitter_card)) > 250) {
+						return false;
+					}
+
+					return true;
 				}
 
-				if (strlen(trim($og_url)) > 250) {
-					return false;
+				function check_twitter_url($twitter_url)
+				{
+					if (empty($twitter_url)) {
+						return false;
+					}
+
+					if (strlen(trim($twitter_url)) > 250) {
+						return false;
+					}
+
+					return true;
 				}
 
-				return true;
-			}
-			
-			function check_og_title($og_title)
-			{
-				if (empty($og_title)) {
-					return false;
+				function check_twitter_title($twitter_title)
+				{
+					if (empty($twitter_title)) {
+						return false;
+					}
+
+					if (strlen(trim($twitter_title)) > 250) {
+						return false;
+					}
+
+					return true;
 				}
 
-				if (strlen(trim($og_title)) > 250) {
-					return false;
+				function check_twitter_description($twitter_description)
+				{
+					if (empty($twitter_description)) {
+						return false;
+					}
+
+					if (strlen(trim($primary_title)) > 250) {
+						return false;
+					}
+
+					return true;
 				}
 
-				return true;
-			}
-			
-			function check_og_description($og_description)
-			{
-				if (empty($og_description)) {
-					return false;
+				function check_twitter_image($twitter_image)
+				{
+					if (empty($twitter_image)) {
+						return false;
+					}
+
+					if (strlen(trim($twitter_image)) > 250) {
+						return false;
+					}
+
+					return true;
 				}
 
-				if (strlen(trim($og_description)) > 250) {
-					return false;
+				if(isset($_POST['primary_title']) &&  check_primary_title($_POST['primary_title']) && isset($_POST['primary_meta_title']) &&  check_primary_meta_title($_POST['primary_meta_title']) && isset($_POST['primary_description']) &&  check_primary_description($_POST['primary_description']) && isset($_POST['og_type']) &&  check_og_type($_POST['og_type']) && isset($_POST['og_url']) &&  check_og_url($_POST['og_url']) && isset($_POST['og_title']) &&  check_og_title($_POST['og_title']) && isset($_POST['og_description']) &&  check_og_description($_POST['og_description']) && isset($_POST['og_image']) &&  check_og_image($_POST['og_image']) && isset($_POST['twitter_card']) &&  check_twitter_card($_POST['twitter_card']) && isset($_POST['twitter_url']) &&  check_twitter_url($_POST['twitter_url']) && isset($_POST['twitter_title']) &&  check_twitter_title($_POST['twitter_title']) && isset($_POST['twitter_description']) &&  check_twitter_description($_POST['twitter_description']) && isset($_POST['twitter_image']) &&  check_twitter_image($_POST['twitter_image'])) {
+
+					$SLL_results = $wpdb->get_results("SELECT * FROM $table_name WHERE id = 1");
+
+					if($wpdb->num_rows == 0) {
+
+					$wpdb->insert($table_name,
+									array(
+										'primary_title' => $SLL_primary_title,
+										'primary_meta_title' => $SLL_primary_meta_title,
+										'primary_description' => $SLL_primary_description,
+										'og_type' => $SLL_og_type,
+										'og_url' => $SLL_og_url,
+										'og_title' => $SLL_og_title,
+										'og_description' => $SLL_og_description,
+										'og_image' => $SLL_og_image,
+										'twitter_card' => $SLL_twitter_card,
+										'twitter_url' => $SLL_twitter_url,
+										'twitter_title' => $SLL_twitter_title,
+										'twitter_description' => $SLL_twitter_description,
+										'twitter_image' => $SLL_twitter_image
+									),
+									array(
+										'%s',
+										'%s',
+										'%s',
+										'%s',
+										'%s',
+										'%s',
+										'%s',
+										'%s',
+										'%s',
+										'%s',
+										'%s',
+										'%s',
+										'%s'
+									)
+
+					);	
+
+					} else {
+
+					$wpdb->update($table_name,
+									array(
+										'primary_title' => $SLL_primary_title,
+										'primary_meta_title' => $SLL_primary_meta_title,
+										'primary_description' => $SLL_primary_description,
+										'og_type' => $SLL_og_type,
+										'og_url' => $SLL_og_url,
+										'og_title' => $SLL_og_title,
+										'og_description' => $SLL_og_description,
+										'og_image' => $SLL_og_image,
+										'twitter_card' => $SLL_twitter_card,
+										'twitter_url' => $SLL_twitter_url,
+										'twitter_title' => $SLL_twitter_title,
+										'twitter_description' => $SLL_twitter_description,
+										'twitter_image' => $SLL_twitter_image
+									),
+									array(
+										'id' => 1
+									),
+									array(
+										'%s',
+										'%s',
+										'%s',
+										'%s',
+										'%s',
+										'%s',
+										'%s',
+										'%s',
+										'%s',
+										'%s',
+										'%s',
+										'%s',
+										'%s'
+									)
+
+					);
+					}
+
+					echo "<script type='text/javascript'>
+				window.location=document.location.href;
+				</script>";
+
 				}
-
-				return true;
-			}
-			
-			function check_og_image($og_image)
-			{
-				if (empty($og_image)) {
-					return false;
-				}
-
-				if (strlen(trim($og_image)) > 250) {
-					return false;
-				}
-
-				return true;
-			}
-			
-			function check_twitter_card($twitter_card)
-			{
-				if (empty($twitter_card)) {
-					return false;
-				}
-
-				if (strlen(trim($twitter_card)) > 250) {
-					return false;
-				}
-
-				return true;
-			}
-			
-			function check_twitter_url($twitter_url)
-			{
-				if (empty($twitter_url)) {
-					return false;
-				}
-
-				if (strlen(trim($twitter_url)) > 250) {
-					return false;
-				}
-
-				return true;
-			}
-			
-			function check_twitter_title($twitter_title)
-			{
-				if (empty($twitter_title)) {
-					return false;
-				}
-
-				if (strlen(trim($twitter_title)) > 250) {
-					return false;
-				}
-
-				return true;
-			}
-			
-			function check_twitter_description($twitter_description)
-			{
-				if (empty($twitter_description)) {
-					return false;
-				}
-
-				if (strlen(trim($primary_title)) > 250) {
-					return false;
-				}
-
-				return true;
-			}
-			
-			function check_twitter_image($twitter_image)
-			{
-				if (empty($twitter_image)) {
-					return false;
-				}
-
-				if (strlen(trim($twitter_image)) > 250) {
-					return false;
-				}
-
-				return true;
-			}
-			
-			if(isset($_POST['primary_title']) &&  check_primary_title($_POST['primary_title']) && isset($_POST['primary_meta_title']) &&  check_primary_meta_title($_POST['primary_meta_title']) && isset($_POST['primary_description']) &&  check_primary_description($_POST['primary_description']) && isset($_POST['og_type']) &&  check_og_type($_POST['og_type']) && isset($_POST['og_url']) &&  check_og_url($_POST['og_url']) && isset($_POST['og_title']) &&  check_og_title($_POST['og_title']) && isset($_POST['og_description']) &&  check_og_description($_POST['og_description']) && isset($_POST['og_image']) &&  check_og_image($_POST['og_image']) && isset($_POST['twitter_card']) &&  check_twitter_card($_POST['twitter_card']) && isset($_POST['twitter_url']) &&  check_twitter_url($_POST['twitter_url']) && isset($_POST['twitter_title']) &&  check_twitter_title($_POST['twitter_title']) && isset($_POST['twitter_description']) &&  check_twitter_description($_POST['twitter_description']) && isset($_POST['twitter_image']) &&  check_twitter_image($_POST['twitter_image'])) {
-
-				$SLL_results = $wpdb->get_results("SELECT * FROM $table_name WHERE id = 1");
-
-				if($wpdb->num_rows == 0) {
-
-				$wpdb->insert($table_name,
-								array(
-									'primary_title' => $SLL_primary_title,
-									'primary_meta_title' => $SLL_primary_meta_title,
-									'primary_description' => $SLL_primary_description,
-									'og_type' => $SLL_og_type,
-									'og_url' => $SLL_og_url,
-									'og_title' => $SLL_og_title,
-									'og_description' => $SLL_og_description,
-									'og_image' => $SLL_og_image,
-									'twitter_card' => $SLL_twitter_card,
-									'twitter_url' => $SLL_twitter_url,
-									'twitter_title' => $SLL_twitter_title,
-									'twitter_description' => $SLL_twitter_description,
-									'twitter_image' => $SLL_twitter_image
-								),
-								array(
-									'%s',
-									'%s',
-									'%s',
-									'%s',
-									'%s',
-									'%s',
-									'%s',
-									'%s',
-									'%s',
-									'%s',
-									'%s',
-									'%s',
-									'%s'
-								)
-
-				);	
-
-				} else {
-
-				$wpdb->update($table_name,
-								array(
-									'primary_title' => $SLL_primary_title,
-									'primary_meta_title' => $SLL_primary_meta_title,
-									'primary_description' => $SLL_primary_description,
-									'og_type' => $SLL_og_type,
-									'og_url' => $SLL_og_url,
-									'og_title' => $SLL_og_title,
-									'og_description' => $SLL_og_description,
-									'og_image' => $SLL_og_image,
-									'twitter_card' => $SLL_twitter_card,
-									'twitter_url' => $SLL_twitter_url,
-									'twitter_title' => $SLL_twitter_title,
-									'twitter_description' => $SLL_twitter_description,
-									'twitter_image' => $SLL_twitter_image
-								),
-								array(
-									'id' => 1
-								),
-								array(
-									'%s',
-									'%s',
-									'%s',
-									'%s',
-									'%s',
-									'%s',
-									'%s',
-									'%s',
-									'%s',
-									'%s',
-									'%s',
-									'%s',
-									'%s'
-								)
-
-				);
-				}
-
-				echo "<script type='text/javascript'>
-			window.location=document.location.href;
-			</script>";
-
-			}
+		}
+	
 	}
 }
 ?>
