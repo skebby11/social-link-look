@@ -15,12 +15,15 @@ Version: 1.0
 Easy and lightweight plugin to change your social meta tags.
 
 == Description ==
-Social Link Look allow you to change your website shared informations, details and images. 
+Social Link Look allows you to change your website shared informations, details and images. 
 The plugin covers the share for basically every social media, like Facebook, Whatsapp, Linkedin, Twitter, VK... 
-The huge amount of compatible social medias is thank to Open Graph Protocol. 
+The huge amount of compatible social medias is thanks to Open Graph Protocol. 
 
 == Installation ==
 Install the plugin the enable it from from plugin page. You\'ll see \"Social Link Look\" on admin left side menu. 
+
+== Screenshots ==
+1. SLL on backend.
 
 == Changelog ==
 Initial Release.
