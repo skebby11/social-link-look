@@ -11,7 +11,7 @@
 
 
 function SLL_add_front_page(){
-	include_once("sll-front-page.php;");
+	include_once("sll-front-page.php");
 	SLL_insert_data();
 }
 
