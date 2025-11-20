@@ -4,7 +4,9 @@
  * Plugin Name: Social Link Look
  * Plugin URI: https://github.com/skebby11/social-link-look
  * Description: Easy and lightweight plugin to change your social meta tags.
- * Version: 1.0
+ * Version: 1.1
+ * Requires at least: 5.0
+ * Requires PHP: 7.4
  * Author: Sebastiano Riva (skebby)
  * Author URI: https://www.sebastianoriva.it/
  */
@@ -27,12 +29,12 @@ add_action('admin_menu', 'SLL_add_menu_function');
 add_action('admin_enqueue_scripts', 'SLL_admin_styles');
 add_action('admin_enqueue_scripts', 'SLL_admin_scripts');
 function SLL_admin_styles(){
-	if($_GET['page']=='sll') {
+	if(isset($_GET['page']) && $_GET['page']=='sll') {
 		wp_enqueue_style('SLL_syles', SLL_url.'/assets/css/style.css');
 	}
 }
 function SLL_admin_scripts(){
-	if($_GET['page']=='sll') {
+	if(isset($_GET['page']) && $_GET['page']=='sll') {
 		wp_enqueue_script( 'SLL_script', SLL_url.'/assets/js/script.js', array('jquery'), '1.0' );
 		wp_enqueue_script( 'github-btn-script', SLL_url.'/assets/js/github-buttons.js' );
 	}
@@ -57,10 +59,10 @@ function SLL_add_menu_function() {
 
 //Plugin main function
 function hook_sll() {
-	
+
 	global $wpdb;
 	$table_name=$wpdb->prefix.'sll_options';
-	$SLL_results = $wpdb->get_results("SELECT * FROM $table_name ORDER BY id DESC LIMIT 1");
+	$SLL_results = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name ORDER BY id DESC LIMIT %d", 1));
 
 	foreach ($SLL_results as $SLL_row) {
 		$primary_title = $SLL_row->primary_title;
@@ -87,22 +89,22 @@ function hook_sll() {
 
 
 		<!-- Primary Meta Tags -->
-		<meta name="title" content="<?php echo $primary_meta_title ?>">
-		<meta name="description" content="<?php echo $primary_description ?>">
+		<meta name="title" content="<?php echo esc_attr($primary_meta_title) ?>">
+		<meta name="description" content="<?php echo esc_attr($primary_description) ?>">
 
 		<!-- Open Graph, Facebook -->
-		<meta property="og:type" content="<?php echo $og_type ?>">
-		<meta property="og:url" content="<?php echo $og_url ?>">
-		<meta property="og:title" content="<?php echo $og_title ?>">
-		<meta property="og:description" content="<?php echo $og_description ?>">
-		<meta property="og:image" content="<?php echo $og_image ?>">
+		<meta property="og:type" content="<?php echo esc_attr($og_type) ?>">
+		<meta property="og:url" content="<?php echo esc_url($og_url) ?>">
+		<meta property="og:title" content="<?php echo esc_attr($og_title) ?>">
+		<meta property="og:description" content="<?php echo esc_attr($og_description) ?>">
+		<meta property="og:image" content="<?php echo esc_url($og_image) ?>">
 
 		<!-- Twitter -->
-		<meta property="twitter:card" content="<?php echo $twitter_card ?>">
-		<meta property="twitter:url" content="<?php echo $twitter_url ?>">
-		<meta property="twitter:title" content="<?php echo $twitter_title ?>">
-		<meta property="twitter:description" content="<?php echo $twitter_description ?>">
-		<meta property="twitter:image" content="<?php echo $twitter_image ?>">
+		<meta property="twitter:card" content="<?php echo esc_attr($twitter_card) ?>">
+		<meta property="twitter:url" content="<?php echo esc_url($twitter_url) ?>">
+		<meta property="twitter:title" content="<?php echo esc_attr($twitter_title) ?>">
+		<meta property="twitter:description" content="<?php echo esc_attr($twitter_description) ?>">
+		<meta property="twitter:image" content="<?php echo esc_url($twitter_image) ?>">
 
     <?php
 }
