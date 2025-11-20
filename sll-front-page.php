@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 global $wpdb;
 $table_name=$wpdb->prefix.'sll_options';
-$SLL_results = $wpdb->get_results("SELECT * FROM $table_name ORDER BY id DESC LIMIT 1");
+$SLL_results = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name ORDER BY id DESC LIMIT %d", 1));
 
 foreach ($SLL_results as $SLL_row) {
 	$primary_title = esc_html($SLL_row->primary_title);
@@ -359,7 +359,7 @@ function SLL_insert_data() {
 
 				if(isset($_POST['primary_title']) &&  check_primary_title($_POST['primary_title']) && isset($_POST['primary_meta_title']) &&  check_primary_meta_title($_POST['primary_meta_title']) && isset($_POST['primary_description']) &&  check_primary_description($_POST['primary_description']) && isset($_POST['og_type']) &&  check_og_type($_POST['og_type']) && isset($_POST['og_url']) &&  check_og_url($_POST['og_url']) && isset($_POST['og_title']) &&  check_og_title($_POST['og_title']) && isset($_POST['og_description']) &&  check_og_description($_POST['og_description']) && isset($_POST['og_image']) &&  check_og_image($_POST['og_image']) && isset($_POST['twitter_card']) &&  check_twitter_card($_POST['twitter_card']) && isset($_POST['twitter_url']) &&  check_twitter_url($_POST['twitter_url']) && isset($_POST['twitter_title']) &&  check_twitter_title($_POST['twitter_title']) && isset($_POST['twitter_description']) &&  check_twitter_description($_POST['twitter_description']) && isset($_POST['twitter_image']) &&  check_twitter_image($_POST['twitter_image'])) {
 
-					$SLL_results = $wpdb->get_results("SELECT * FROM $table_name WHERE id = 1");
+					$SLL_results = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHERE id = %d", 1));
 
 					if($wpdb->num_rows == 0) {
 
